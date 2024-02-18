@@ -1,0 +1,36 @@
+.input-field {
+    @apply relative w-full font-medium;
+    color: #292929;
+    padding: 11px 12px;
+    background: #ffffff;
+    border: 1px solid #e6e4e1;
+    border-radius: 8px;
+    transition: all 300ms ease-in;
+    outline: none;
+
+    &::placeholder {
+        color: #6b7280;
+        font-weight: normal;
+        font-size: 15px;
+    }
+
+    &:focus {
+        border: 1.5px solid #7e22ce;
+    }
+
+    &.error {
+        border: 1px solid red;
+    }
+
+
+  &--has-icon {
+    padding-left: 44px !important;
+  }
+}
+
+.input-svg-wrapper {
+    position: absolute;
+    left: 21px;
+    top: 24px;
+    transform: translateY(-50%);
+}
