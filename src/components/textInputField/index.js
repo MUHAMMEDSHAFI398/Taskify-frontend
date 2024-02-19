@@ -67,7 +67,6 @@ TextInputField.propTypes = {
 
 TextInputField.defaultProps = {
     placeholder: 'Name',
-    icon: false,
     required: false,
     register: () => { },
     iconClassName: '',

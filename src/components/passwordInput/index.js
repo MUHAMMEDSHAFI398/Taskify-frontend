@@ -59,7 +59,6 @@ PasswordInput.defaultProps = {
   placeholder: 'Enter Password',
   required: false,
   register: () => {},
-  hasIcon:true,
 };
 
 export default PasswordInput;
