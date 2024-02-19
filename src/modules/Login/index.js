@@ -5,7 +5,7 @@ import Logo from "assets/icons/logo.png"
 import { ReactComponent as EmailIcon } from 'assets/icons/icon-email.svg';
 import CustomButton from "components/customButton";
 import { useNavigate } from "react-router-dom";
-import backgroundImage from "assets/images/todo1.jpg"
+import backgroundImage from "assets/images/lapwith.jpg"
 
 const Login = () => {
     const navigate = useNavigate()

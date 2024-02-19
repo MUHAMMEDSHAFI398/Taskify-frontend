@@ -5,7 +5,7 @@ import TextInputField from 'components/textInputField'
 import Logo from "assets/icons/logo.png"
 import { ReactComponent as EmailIcon } from 'assets/icons/icon-email.svg';
 import { useNavigate } from 'react-router-dom'
-import backgroundImage from "assets/images/lapwith.jpg"
+import backgroundImage from "assets/images/todo1.jpg"
 
 
 const Signup = () => {
