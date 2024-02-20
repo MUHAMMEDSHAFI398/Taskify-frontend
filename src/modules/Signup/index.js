@@ -1,17 +1,16 @@
+import { ReactComponent as EmailIcon } from 'assets/icons/icon-email.svg';
+import { ReactComponent as NameIcon } from 'assets/icons/icon-user.svg';
 import CardTitle from 'components/cardTitle'
 import CustomButton from 'components/customButton'
 import PasswordInput from 'components/passwordInput'
 import TextInputField from 'components/textInputField'
-import Logo from "assets/icons/logo.png"
-import { ReactComponent as EmailIcon } from 'assets/icons/icon-email.svg';
-import { ReactComponent as NameIcon } from 'assets/icons/icon-user.svg';
+import FiedErrorMessage from 'components/formErrorMessage'
 import { useNavigate } from 'react-router-dom'
-import backgroundImage from "assets/images/todo1.jpg"
 import { useForm } from 'react-hook-form';
-import { object, string } from 'yup';
+import { object, string, ref } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState } from 'react'
-
+import Logo from "assets/icons/logo.png"
+import backgroundImage from "assets/images/todo1.jpg"
 
 const Signup = () => {
     const navigate = useNavigate()
@@ -19,35 +18,24 @@ const Signup = () => {
         name: string().required('Name is required'),
         email: string().email('Invalid email').required('Email is required'),
         password: string().min(6, 'Password must be at least 6 characters').required('Password is required'),
-        confirmPassword: string().min(6, 'Password must be at least 6 characters').required('Password is required')
+        confirmPassword: string()
+            .oneOf([ref('password'), null], 'Passwords must match')
+            .min(6, 'Password must be at least 6 characters')
+            .required('Password is required')
     });
     const {
         register,
         handleSubmit,
-        formState: { errors, touchedFields }
+        formState: { errors, touchedFields },
     } = useForm({
         resolver: yupResolver(schema),
         mode: 'onChange'
     });
-    const [passwordMatchError, setPasswordMatchError] = useState(false)
-    const onSubmit = (data) => {
-        const { password, confirmPassword } = data
-        if (password !== confirmPassword) {
-            setPasswordMatchError(true)
-        }else {
-         const payload = {
-            name:data.name,
-            email:data.email,
-            password:data.password
-         }
-        }
-    }
-    const handleConfirmPasswordChange = () => {
-        if (passwordMatchError) {
-            setPasswordMatchError(false)
-        }
-    }
 
+    const onSubmit = (data) => {
+        console.log(data)
+    }
+  
     return (
         <section className="flex items-center flex-col z-50 w-full h-screen"
             style={{
@@ -60,11 +48,11 @@ const Signup = () => {
                     <img style={{ width: '38px', height: '43px' }} src={Logo} alt='logo' />
                 </div>
                 <CardTitle
-                    title="Sign up"
+                    title="Signup"
                     className='mb-5'
                 />
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full" action="#">
-                    <div className="mb-6">
+                    <div className="mb-7">
                         <TextInputField
                             name="name"
                             style={{ backgroundColor: "white" }}
@@ -72,10 +60,14 @@ const Signup = () => {
                             autoComplete={"0ff"}
                             renderIcon={() => <NameIcon />}
                             register={register}
-                            error={errors.name && touchedFields.name}
+                            error={errors?.name && touchedFields?.name}
+                        />
+                        <FiedErrorMessage
+                            errorMessage={errors?.name?.message}
+                            showMessage={errors?.name && touchedFields?.name}
                         />
                     </div>
-                    <div className="mb-6">
+                    <div className="mb-7">
                         <TextInputField
                             name="email"
                             style={{ backgroundColor: "white" }}
@@ -85,31 +77,42 @@ const Signup = () => {
                             register={register}
                             error={errors.email && touchedFields.email}
                         />
+                        <FiedErrorMessage
+                            errorMessage={errors?.email?.message}
+                            showMessage={errors?.email && touchedFields?.email}
+                        />
                     </div>
-                    <div className="mb-6">
+                    <div className="mb-7">
                         <PasswordInput
                             name="password"
                             placeholder="Password"
                             autoComplete={"0ff"}
                             register={register}
-                            error={errors.password && touchedFields.password}
+                            error={errors?.password && touchedFields?.password}
+                        />
+                        <FiedErrorMessage
+                            errorMessage={errors?.password?.message}
+                            showMessage={errors?.password && touchedFields?.password}
                         />
                     </div>
                     <div className="mb-10">
                         <PasswordInput
                             name="confirmPassword"
-                            placeholder="Confirm [assword"
+                            placeholder="Confirm password"
                             autoComplete={"0ff"}
                             register={register}
                             error={
-                                (errors.confirmPassword && touchedFields.confirmPassword) ||
-                                passwordMatchError
+                                errors?.confirmPassword && touchedFields?.confirmPassword
                             }
-                            onChange={handleConfirmPasswordChange}
+                        />
+                        <FiedErrorMessage
+                            showMessage={errors?.confirmPassword && touchedFields?.confirmPassword}
+                            errorMessage={errors?.confirmPassword?.message}
                         />
                     </div>
                     <CustomButton
-                        className="mb-6"
+                        type="submit"
+                        className="mb-7"
                         label="Submit"
                         style={{ backgroundColor: '#7e22ce' }}
                     />
