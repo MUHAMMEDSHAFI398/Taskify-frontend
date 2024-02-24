@@ -11,9 +11,13 @@ import { object, string, ref } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Logo from "assets/icons/logo.png"
 import backgroundImage from "assets/images/todo1.jpg"
+import { useDispatch } from 'react-redux';
+import { postSignup } from 'services/authentication/index.js';
 
 const Signup = () => {
+
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const schema = object().shape({
         name: string().required('Name is required'),
         email: string().email('Invalid email').required('Email is required'),
@@ -33,8 +37,8 @@ const Signup = () => {
     });
 
     const onSubmit = (data) => {
-        console.log(data)
-    }
+        dispatch(postSignup(data))
+   }
   
     return (
         <section className="flex items-center flex-col z-50 w-full h-screen"
