@@ -11,7 +11,7 @@ const CustomButton = (props) => {
     isLoading,
     loaderInline,
     enableLoader,
-    loaderStyle = {},
+    // loaderStyle = {},
     isDisabled,
     ...rest
   } = props;
