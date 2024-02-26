@@ -4,7 +4,7 @@ import CardTitle from 'components/cardTitle'
 import CustomButton from 'components/customButton'
 import PasswordInput from 'components/passwordInput'
 import TextInputField from 'components/textInputField'
-import FiedErrorMessage from 'components/formErrorMessage'
+import ErrorMessage from 'components/formErrorMessage';
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form';
 import { object, string, ref } from 'yup';
@@ -13,9 +13,11 @@ import Logo from "assets/icons/logo.png"
 import backgroundImage from "assets/images/todo1.jpg"
 import { useDispatch } from 'react-redux';
 import { postSignup } from 'services/authentication/index.js';
+import { useState } from 'react';
 
 const Signup = () => {
 
+    const [isLoading,setIsLoading] = useState(false)
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const schema = object().shape({
@@ -33,14 +35,27 @@ const Signup = () => {
         formState: { errors, touchedFields },
     } = useForm({
         resolver: yupResolver(schema),
-        mode: 'onChange'
+        mode: 'all'
     });
 
+    const successCb = () => {
+        setIsLoading(false)
+        navigate('/verification')
+    }
+    const failedCb = () => {
+        setIsLoading(false)
+    }
+ 
     const onSubmit = (data) => {
-        dispatch(postSignup(data))
+        const payload = {
+            name:data.name,
+            email:data.email,
+            password:data.password
+        }
+        dispatch(postSignup(payload,successCb,failedCb))
    }
   
-    return (
+    return (    
         <section className="flex items-center flex-col z-50 w-full h-screen"
             style={{
                 backgroundImage: `url(${backgroundImage})`,
@@ -66,7 +81,7 @@ const Signup = () => {
                             register={register}
                             error={errors?.name && touchedFields?.name}
                         />
-                        <FiedErrorMessage
+                        <ErrorMessage
                             errorMessage={errors?.name?.message}
                             showMessage={errors?.name && touchedFields?.name}
                         />
@@ -81,7 +96,7 @@ const Signup = () => {
                             register={register}
                             error={errors.email && touchedFields.email}
                         />
-                        <FiedErrorMessage
+                        <ErrorMessage
                             errorMessage={errors?.email?.message}
                             showMessage={errors?.email && touchedFields?.email}
                         />
@@ -94,7 +109,7 @@ const Signup = () => {
                             register={register}
                             error={errors?.password && touchedFields?.password}
                         />
-                        <FiedErrorMessage
+                        <ErrorMessage
                             errorMessage={errors?.password?.message}
                             showMessage={errors?.password && touchedFields?.password}
                         />
@@ -109,7 +124,7 @@ const Signup = () => {
                                 errors?.confirmPassword && touchedFields?.confirmPassword
                             }
                         />
-                        <FiedErrorMessage
+                        <ErrorMessage
                             showMessage={errors?.confirmPassword && touchedFields?.confirmPassword}
                             errorMessage={errors?.confirmPassword?.message}
                         />
@@ -119,6 +134,7 @@ const Signup = () => {
                         className="mb-7"
                         label="Submit"
                         style={{ backgroundColor: '#7e22ce' }}
+                        isLoading={isLoading}
                     />
                 </form>
                 <div className="flex justify-center items-center mt-8">

@@ -31,7 +31,6 @@ const PasswordInput = (props) => {
       </span>
       <input
         name={name}
-        data-testid="password-field"
         type={showIcon ? 'text' : 'password'}
         className={`input-field input-field--has-icon ${className} ${isError}`}
         placeholder={placeholder}

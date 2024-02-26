@@ -1,5 +1,6 @@
 import { toUrlParams} from "utils/toQueryString";
 import axios from "../../services/axios/index";
+import Swal from 'sweetalert2'
 
 class APIRequest {
     constructor() {
@@ -25,6 +26,14 @@ class APIRequest {
                 return response;
             },
             (error) => {
+                const url = error?.request?.responseURL
+                if (!url.includes("/auth/login")) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: error?.message,
+                      });
+                }
                 return Promise.reject(error);
             }
         );

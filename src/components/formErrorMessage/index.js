@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const FiedErrorMessage = (props) => {
+const ErrorMessage = (props) => {
     const {
         showMessage,
         errorMessage,
@@ -14,10 +14,11 @@ const FiedErrorMessage = (props) => {
                 showMessage && (
                     <div
                         className={`relative ${containerClassName}`}
-                        style={{ color: 'red'}}
+                        style={{ color: 'red' }}
                     >
                         <span
-                            className={`absolute text-[13px] ${className} ${style}`}
+                            className={`absolute text-[13px] ${className}`}
+                            style={style}
                         >
                             {errorMessage}
                         </span>
@@ -28,16 +29,16 @@ const FiedErrorMessage = (props) => {
     )
 }
 
-FiedErrorMessage.propTypes = {
+ErrorMessage.propTypes = {
     errorMessage: PropTypes.string,
     containerClassName: PropTypes.string,
     className: PropTypes.string
 };
 
-FiedErrorMessage.defaultProps = {
+ErrorMessage.defaultProps = {
     className: '',
     containerClassName: '',
     errorMessage: 'Error message'
 };
 
-export default FiedErrorMessage
+export default ErrorMessage

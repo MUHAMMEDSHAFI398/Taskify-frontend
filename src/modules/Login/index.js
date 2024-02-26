@@ -1,34 +1,54 @@
 import { useForm } from 'react-hook-form';
 import { object, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import CardTitle from "../../components/cardTitle";
-import PasswordInput from "../../components/passwordInput";
-import TextInputField from "../../components/textInputField";
-import FiedErrorMessage from "components/formErrorMessage";
+import CardTitle from "components/cardTitle";
+import PasswordInput from "components/passwordInput";
+import TextInputField from "components/textInputField";
+import ErrorMessage from 'components/formErrorMessage';
 import CustomButton from "components/customButton";
 import Logo from "assets/icons/logo.png"
 import { ReactComponent as EmailIcon } from 'assets/icons/icon-email.svg';
 import { useNavigate } from "react-router-dom";
 import backgroundImage from "assets/images/lapwith.jpg"
+import { useDispatch, useSelector } from 'react-redux';
+import { postLogin } from 'services/authentication';
+import { setAuthError } from 'reduxStore/slices/login';
+import { useState } from 'react';
+import { isEmpty } from 'utils/utils';
 
 const Login = () => {
+
+    const [isLoading,setIsLoading] = useState(false)
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const schema = object().shape({
-        name: string().required('Name is required'),
         email: string().email('Invalid email').required('Email is required'),
         password: string().required('Password is required'),
     });
+    const {authError} = useSelector((state)=>state.auth)
+
     const {
         register,
         handleSubmit,
         formState: { errors, touchedFields },
     } = useForm({
         resolver: yupResolver(schema),
-        mode: 'onChange'
+        mode: 'all'
     });
 
+    const successCb = () => {
+        setIsLoading(false)
+        navigate('/dashboard')
+    }
+    const failedCb = (message) => {
+        setIsLoading(false)
+        dispatch(setAuthError(message))
+    }
+
     const onSubmit = (data) => {
-        console.log(data)
+        setIsLoading(true)
+        dispatch(setAuthError(''))
+        dispatch(postLogin(data, successCb, failedCb))
     }
 
     return (
@@ -46,9 +66,15 @@ const Login = () => {
                 </div>
                 <CardTitle
                     title="Login to Taskify"
-                    className='mb-5'
+                    className='mb-10'
                 />
-                <form onSubmit={handleSubmit(onSubmit)} className="w-full" action="#">
+                <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+                    <ErrorMessage
+                        containerClassName="flex justify-center"
+                        style={{top:'-33px',fontSize:'16px'}}
+                        errorMessage={!isEmpty(authError) ? authError : ""}
+                        showMessage={true}
+                    />
                     <div className="mb-6">
                         <TextInputField
                             name="email"
@@ -59,7 +85,7 @@ const Login = () => {
                             renderIcon={() => <EmailIcon />}
                             error={errors?.email && touchedFields?.email}
                         />
-                        <FiedErrorMessage
+                        <ErrorMessage
                             errorMessage={errors?.email?.message}
                             showMessage={errors?.email && touchedFields?.email}
                         />
@@ -72,7 +98,7 @@ const Login = () => {
                             register={register}
                             error={errors?.password && touchedFields?.password}
                         />
-                        <FiedErrorMessage
+                        <ErrorMessage
                             errorMessage={errors?.password?.message}
                             showMessage={errors?.password && touchedFields?.password}
                         />
@@ -82,6 +108,7 @@ const Login = () => {
                         className="mb-6"
                         label="Submit"
                         style={{ backgroundColor: '#7e22ce' }}
+                        isLoading={isLoading}
                     />
                 </form>
                 <div
