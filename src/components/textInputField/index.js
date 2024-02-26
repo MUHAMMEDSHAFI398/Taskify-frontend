@@ -30,7 +30,6 @@ const TextInputField = React.forwardRef((props, ref) => {
         <div className="relative" style={containerStyle}>
             <input
                 ref={ref}
-                data-testid="input-text-field"
                 type="text"
                 name={name}
                 placeholder={placeholder}

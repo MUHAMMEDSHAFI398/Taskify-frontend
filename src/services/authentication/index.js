@@ -1,18 +1,39 @@
 import APIRequest from "services/apiRequest";
-import { SIGNUP } from "urls/authentication";
+import { LOGIN, SIGNUP } from "urls/authentication";
 
-export const postSignup = (payload) => {
-    console.log(payload)
-    console.log("at post signup")
-    return (dispatch, getState) => {
-        console.log("at post signup")
-
-      try {
-        new APIRequest().post(SIGNUP, payload).then((res) => {
-            console.log("hihi")
-        });
-      } catch (e) {
-        console.log(e);
-      }
-    };
+export const postSignup = (payload, successCb, failedCb) => {
+  return async () => {
+    try {
+      await new APIRequest().post(SIGNUP, payload)
+        .then((res) => {
+          if (res.status === 201) {
+            if (successCb) successCb()
+          }
+        }).catch((e) => {
+          if (failedCb) failedCb(e.response?.data?.message)
+          console.log(e)
+        })
+    } catch (e) {
+      console.log(e);
+    }
   };
+};
+
+export const postLogin = (payload, successCb, failedCb) => {
+  return async () => {
+    try {
+      await new APIRequest().post(LOGIN, payload)
+        .then((res) => {
+          if (res.status === 200) {
+            if (successCb) successCb()
+          }
+        }).catch((e) => {
+          if (failedCb) failedCb(e.response?.data?.message)
+          console.log(e)
+        })
+    } catch (e) {
+      if (failedCb) failedCb(e.response?.data?.message)
+      console.log(e);
+    }
+  };
+};

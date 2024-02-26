@@ -1,5 +1,5 @@
 export const isEmpty = (val) => {
-    // Took from : https://stackoverflow.com/a/28953167
+    // Taken from : https://stackoverflow.com/a/28953167
     /*
     test results
     --------------
