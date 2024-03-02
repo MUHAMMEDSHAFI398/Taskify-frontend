@@ -34,3 +34,14 @@ export const isEmpty = (val) => {
   
     return false;
   };
+
+  export const replaceUrl = (url, id, value) => {
+    if (Array.isArray(id) && Array.isArray(value)) {
+      let URL = url;
+      id.forEach((id, index) => {
+        URL = URL.replace(`:${id}`, value[index]);
+      });
+      return URL;
+    }
+    return url.replace(`:${id}`, value);
+  };

@@ -21,6 +21,7 @@
         "react-hooks"
     ],
     "rules": {
+        "react-hooks/exhaustive-deps": "off",
         "react/react-in-jsx-scope": "off",
         "react/prop-types": "off",
         "no-unused-vars": ["error", { "vars": "all", "args": "none" }],
@@ -29,10 +30,9 @@
         "react/no-unescaped-entities": "warn",
         "no-empty": "warn",
         "no-debugger": "warn",
-        "react-hooks/exhaustive-deps": "off",
         "prettier/prettier": "off",
         "scss/at-apply-no-warning": "off"
     },
     "ignorePatterns": ["build/*", "node_modules/*", "public/*"]
-
+    
 }

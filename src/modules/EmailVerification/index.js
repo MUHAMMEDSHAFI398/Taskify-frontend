@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-const EmailVarification = () => {
+const EmailVerification = () => {
     useEffect(() => {
        
     }, [])
@@ -9,4 +9,4 @@ const EmailVarification = () => {
     )
 }
 
-export default EmailVarification
+export default EmailVerification
