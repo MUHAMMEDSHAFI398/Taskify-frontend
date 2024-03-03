@@ -17,7 +17,7 @@ import { useState } from 'react';
 
 const Signup = () => {
 
-    const [isLoading,setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const schema = object().shape({
@@ -45,17 +45,19 @@ const Signup = () => {
     const failedCb = () => {
         setIsLoading(false)
     }
- 
+
     const onSubmit = (data) => {
+        setIsLoading(true)
+        document.activeElement.blur()
         const payload = {
-            name:data.name,
-            email:data.email,
-            password:data.password
+            name: data.name,
+            email: data.email,
+            password: data.password
         }
-        dispatch(postSignup(payload,successCb,failedCb))
-   }
-  
-    return (    
+        dispatch(postSignup(payload, successCb, failedCb))
+    }
+
+    return (
         <section className="flex items-center flex-col z-50 w-full h-screen"
             style={{
                 backgroundImage: `url(${backgroundImage})`,
